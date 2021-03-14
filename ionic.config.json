@@ -1,5 +1,7 @@
 {
   "name": "suficienciaMobile",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

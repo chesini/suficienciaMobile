@@ -15,6 +15,7 @@ $RECYCLE.BIN/
 
 *.log
 log.txt
+ig.txt
 npm-debug.log*
 
 /.idea
