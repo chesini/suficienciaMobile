@@ -4,7 +4,7 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { TranslateService } from '@ngx-translate/core';
 import { Config, Nav, Platform } from 'ionic-angular';
 
-import { FirstRunPage } from '../pages';
+import { WelcomePage } from '../pages';
 import { Settings } from '../providers';
 
 @Component({
@@ -27,7 +27,7 @@ import { Settings } from '../providers';
   <ion-nav #content [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage = FirstRunPage;
+  rootPage = WelcomePage;
 
   @ViewChild(Nav) nav: Nav;
 
@@ -57,7 +57,7 @@ export class MyApp {
 
   initTranslate() {
     // Set the default language for translation strings, and the current language.
-    this.translate.setDefaultLang('en');
+    this.translate.setDefaultLang('pt-br');
     const browserLang = this.translate.getBrowserLang();
 
     if (browserLang) {
@@ -73,7 +73,7 @@ export class MyApp {
         this.translate.use(this.translate.getBrowserLang());
       }
     } else {
-      this.translate.use('en'); // Set your language here
+      this.translate.use('pt-br'); // Set your language here
     }
 
     this.translate.get(['BACK_BUTTON_TEXT']).subscribe(values => {

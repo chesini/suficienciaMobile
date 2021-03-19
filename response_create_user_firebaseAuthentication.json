@@ -1,0 +1,31 @@
+{
+    "uid": "GLn6UTju9mgrZp4eIzEz1lxsehG2",
+    "displayName": null,
+    "photoURL": null,
+    "email": "test@example.com",
+    "emailVerified": false,
+    "phoneNumber": null,
+    "isAnonymous": false,
+    "providerData": [
+        {
+            "uid": "test@example.com",
+            "displayName": null,
+            "photoURL": null,
+            "email": "test@example.com",
+            "phoneNumber": null,
+            "providerId": "password"
+        }
+    ],
+    "apiKey": "AIzaSyC6LAqbBNakYQFu6eZClSPm7TmPWYOomDQ",
+    "appName": "[DEFAULT]",
+    "authDomain": "suficienciamobile.firebaseapp.com",
+    "stsTokenManager": {
+        "apiKey": "AIzaSyC6LAqbBNakYQFu6eZClSPm7TmPWYOomDQ",
+        "refreshToken": "AOvuKvQpTLlxDXbcPBmcdcMVGKcizrX7xujDjR-6M9JtfhKt2WnCriIArRH-ICulgXn9lrY7EyL7JeCguon3RrG_IAHXx5vPcEzOeytHJfhHAWjGmh-oMdDreRO5PpkF78cfcbI4aTHBa1hZHmgfOV_Cyl3v7B-i1fK9h3jlt5qwjG0pCK1ymWzxxYNbe2hNGYvXCmHRftuTxBqeXLofIZIxD13H4pi-JA",
+        "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjRlMDBlOGZlNWYyYzg4Y2YwYzcwNDRmMzA3ZjdlNzM5Nzg4ZTRmMWUiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vc3VmaWNpZW5jaWFtb2JpbGUiLCJhdWQiOiJzdWZpY2llbmNpYW1vYmlsZSIsImF1dGhfdGltZSI6MTYxNjA5NjQyNiwidXNlcl9pZCI6IkdMbjZVVGp1OW1nclpwNGVJekV6MWx4c2VoRzIiLCJzdWIiOiJHTG42VVRqdTltZ3JacDRlSXpFejFseHNlaEcyIiwiaWF0IjoxNjE2MDk2NDI2LCJleHAiOjE2MTYxMDAwMjYsImVtYWlsIjoidGVzdEBleGFtcGxlLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjpmYWxzZSwiZmlyZWJhc2UiOnsiaWRlbnRpdGllcyI6eyJlbWFpbCI6WyJ0ZXN0QGV4YW1wbGUuY29tIl19LCJzaWduX2luX3Byb3ZpZGVyIjoicGFzc3dvcmQifX0.R_qE5hT59Ku6MxRpa0dfj79l7UVhPBAsvBvOpUkHsruiYaCXnvdFe5E7YwrZcAAu9N-z1Glxgbmll2InV2nXJzCD6NuAxt6UHWdIPoQj3LmTQfd1tTJaB4THpjMWJ-xuNdoSlSvZXsLT6l_0UvtbmKoNB--yIJ3Etsbiqbs8m2TqCk9ta5hKABD3y91vzPJ6TB939ikMoQ1EXkVN-csB4sSOyWFY2eDnAXdHQzZKPqED2hy-tQQVKsa-2ebhR70GBNA6Th4MzEKfq-uJGM2gkTOKUPrFZlcRd5aCMomFyAUbasxCRquGRMZeLNXKaPA9_YbO4EWkmQqDApcGScIkog",
+        "expirationTime": 1616100025930
+    },
+    "redirectEventId": null,
+    "lastLoginAt": "1616096426390",
+    "createdAt": "1616096426390"
+}

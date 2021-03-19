@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
 import { IonicPage, NavController, ViewController } from 'ionic-angular';
+import { Geolocation } from '@ionic-native/geolocation';
 
 @IonicPage()
 @Component({
@@ -17,12 +18,31 @@ export class ItemCreatePage {
 
   form: FormGroup;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera) {
+  constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera, public geoLocation: Geolocation) {
     this.form = formBuilder.group({
-      profilePic: [''],
-      name: ['', Validators.required],
-      about: ['']
+      title: [''],
+      description: ['', Validators.required],
+      requestPicture: [''],
+      geoLocation: ['']
     });
+    this.form.patchValue({ 'profilePic': ''});
+    geoLocation.getCurrentPosition()
+    .then((res) => {
+      console.log(res.coords);
+    })
+    .catch((error) => {
+       console.log('Error getting location', error);
+    });
+    // this.form.patchValue({ 'geoLocation': geoData });
+
+
+
+    const subscription = geoLocation.watchPosition()
+                              .filter((p) => p.coords !== undefined) //Filter Out Errors
+                              .subscribe(position => {
+      console.log(position.coords.longitude + ' ' + position.coords.latitude);
+    });
+
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
@@ -62,7 +82,7 @@ export class ItemCreatePage {
   }
 
   getProfileImageStyle() {
-    return 'url(' + this.form.controls['profilePic'].value + ')'
+    // return 'url(' + this.form.controls['profilePic'].value + ')'
   }
 
   /**
@@ -78,6 +98,6 @@ export class ItemCreatePage {
    */
   done() {
     if (!this.form.valid) { return; }
-    this.viewCtrl.dismiss(this.form.value);
+    // this.viewCtrl.dismiss(this.form.value);
   }
 }

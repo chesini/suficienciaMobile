@@ -9,15 +9,30 @@ import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
 
+import { AngularFireModule } from 'angularfire2';
+import { AngularFireAuthModule } from 'angularfire2/auth';
+import { Geolocation } from '@ionic-native/geolocation';
+
+export const firebaseConfig = {
+  apiKey: "AIzaSyC6LAqbBNakYQFu6eZClSPm7TmPWYOomDQ",
+  authDomain: "suficienciamobile.firebaseapp.com",
+  projectId: "suficienciamobile",
+  storageBucket: "suficienciamobile.appspot.com",
+  messagingSenderId: "652425022154",
+  appId: "1:652425022154:web:99e73b5d6b31d6de2f8233",
+  databaseURL: "https://suficienciamobile-default-rtdb.firebaseio.com/"
+};
+
 import { Items } from '../mocks/providers/items';
 import { Settings, User, Api } from '../providers';
 import { MyApp } from './app.component';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 // The translate loader needs to know where to load i18n files
 // in Ionic's static asset pipeline.
 export function createTranslateLoader(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
-}
+};
 
 export function provideSettings(storage: Storage) {
   /**
@@ -49,7 +64,9 @@ export function provideSettings(storage: Storage) {
       }
     }),
     IonicModule.forRoot(MyApp),
-    IonicStorageModule.forRoot()
+    IonicStorageModule.forRoot(),
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -62,6 +79,8 @@ export function provideSettings(storage: Storage) {
     Camera,
     SplashScreen,
     StatusBar,
+    AngularFireDatabase,
+    Geolocation,
     { provide: Settings, useFactory: provideSettings, deps: [Storage] },
     // Keep this to enable Ionic's runtime error handling during development
     { provide: ErrorHandler, useClass: IonicErrorHandler }

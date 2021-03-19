@@ -3,6 +3,7 @@ import { IonicPage, ModalController, NavController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Items } from '../../providers';
+import { NewRequestPage } from '../';
 
 @IonicPage()
 @Component({
@@ -23,17 +24,20 @@ export class ListMasterPage {
   }
 
   /**
-   * Prompt the user to add a new item. This shows our ItemCreatePage in a
+   * Prompt the user to add a new item. This shows our NewRequestPage in a
    * modal and then adds the new item to our data source if the user created one.
    */
   addItem() {
-    let addModal = this.modalCtrl.create('ItemCreatePage');
-    addModal.onDidDismiss(item => {
-      if (item) {
-        this.items.add(item);
-      }
-    })
-    addModal.present();
+    // let addModal = this.modalCtrl.create('NewRequestPage');
+    // addModal.onDidDismiss(item => {
+    //   if (item) {
+    //     this.items.add(item);
+    //   }
+    // })
+    // addModal.present();
+
+    
+    this.navCtrl.push(NewRequestPage);
   }
 
   /**
