@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController } from 'ionic-angular';
+import { IonicPage, MenuController, NavController } from 'ionic-angular';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Tab1Root } from '../';
 
 /**
  * The Welcome Page is a splash page that quickly describes the app,
@@ -14,7 +16,7 @@ import { IonicPage, NavController } from 'ionic-angular';
 })
 export class WelcomePage {
 
-  constructor(public navCtrl: NavController) { }
+  constructor(public navCtrl: NavController, public menu: MenuController, public firebaseAuth: AngularFireAuth ) { }
 
   login() {
     this.navCtrl.push('LoginPage');
@@ -22,5 +24,15 @@ export class WelcomePage {
 
   signup() {
     this.navCtrl.push('SignupPage');
+  }
+
+  
+  ionViewDidEnter() {
+    this.menu.enable(false);
+    this.firebaseAuth.authState.subscribe(user => {
+      if (user) {
+        this.navCtrl.push(Tab1Root);
+      }
+    });
   }
 }

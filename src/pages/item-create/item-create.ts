@@ -1,8 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Camera } from '@ionic-native/camera';
-import { IonicPage, NavController, ViewController } from 'ionic-angular';
+import { IonicPage, NavController, ToastController, ViewController } from 'ionic-angular';
 import { Geolocation } from '@ionic-native/geolocation';
+import { AngularFireDatabase } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { WelcomePage } from '..';
+import { Subscription } from 'rxjs/Subscription';
 
 @IonicPage()
 @Component({
@@ -18,36 +22,39 @@ export class ItemCreatePage {
 
   form: FormGroup;
 
-  constructor(public navCtrl: NavController, public viewCtrl: ViewController, formBuilder: FormBuilder, public camera: Camera, public geoLocation: Geolocation) {
+  resquestSendSuccessString: string;
+
+  subGeolocation: Subscription;
+  
+  constructor(public navCtrl: NavController,
+      public toastCtrl: ToastController, 
+      public viewCtrl: ViewController, 
+      public formBuilder: FormBuilder, 
+      public camera: Camera, 
+      public geoLocation: Geolocation, 
+      public angularFireDatabase: AngularFireDatabase,
+      public firebaseAuth: AngularFireAuth) {
     this.form = formBuilder.group({
-      title: [''],
+      title: ['', Validators.required],
       description: ['', Validators.required],
-      requestPicture: [''],
-      geoLocation: ['']
+      requestPicture: ['', Validators.required],
+      geoLocation: ['', Validators.required],
+      timeStamp: ['', Validators.required]
     });
-    this.form.patchValue({ 'profilePic': ''});
-    geoLocation.getCurrentPosition()
-    .then((res) => {
-      console.log(res.coords);
-    })
-    .catch((error) => {
-       console.log('Error getting location', error);
-    });
-    // this.form.patchValue({ 'geoLocation': geoData });
 
-
-
-    const subscription = geoLocation.watchPosition()
+    this.subGeolocation = geoLocation.watchPosition()
                               .filter((p) => p.coords !== undefined) //Filter Out Errors
                               .subscribe(position => {
-      console.log(position.coords.longitude + ' ' + position.coords.latitude);
+      this.form.patchValue({ 'geoLocation': position.coords.latitude + ', ' + position.coords.longitude });
+      this.form.patchValue({ 'timeStamp': position.timestamp.toString() });
     });
-
 
     // Watch the form for changes, and
     this.form.valueChanges.subscribe((v) => {
       this.isReadyToSave = this.form.valid;
     });
+
+    this.resquestSendSuccessString = "Solicitação registrada com Sucesso!";
   }
 
   ionViewDidLoad() {
@@ -58,15 +65,14 @@ export class ItemCreatePage {
     if (Camera['installed']()) {
       this.camera.getPicture({
         destinationType: this.camera.DestinationType.DATA_URL,
-        targetWidth: 96,
-        targetHeight: 96
+        cameraDirection: this.camera.Direction.FRONT
       }).then((data) => {
-        this.form.patchValue({ 'profilePic': 'data:image/jpg;base64,' + data });
+        this.form.patchValue({ 'requestPicture': 'data:image/jpg;base64,' + data });
       }, (err) => {
-        alert('Unable to take photo');
+        alert('Não foi possível capturar a imagem! Tente novamente.');
       })
     } else {
-      this.fileInput.nativeElement.click();
+      alert('Câmera não disponível');
     }
   }
 
@@ -75,14 +81,18 @@ export class ItemCreatePage {
     reader.onload = (readerEvent) => {
 
       let imageData = (readerEvent.target as any).result;
-      this.form.patchValue({ 'profilePic': imageData });
+      this.form.patchValue({ 'requestPicture': imageData });
     };
 
     reader.readAsDataURL(event.target.files[0]);
   }
 
   getProfileImageStyle() {
-    // return 'url(' + this.form.controls['profilePic'].value + ')'
+    return 'url(' + this.form.controls['requestPicture'].value + ')'
+  }
+
+  getRequestPictureSource() {
+    return this.form.controls['requestPicture'].value ;
   }
 
   /**
@@ -98,6 +108,34 @@ export class ItemCreatePage {
    */
   done() {
     if (!this.form.valid) { return; }
-    // this.viewCtrl.dismiss(this.form.value);
+    this.firebaseAuth.authState.subscribe(user => {
+      if (!user) {
+        let toast = this.toastCtrl.create({
+          message: "Usuário não autenticado",
+          duration: 3000,
+          position: 'top'
+        });
+        toast.present();
+        this.navCtrl.popTo(WelcomePage);
+      } else {
+        this.angularFireDatabase.database.ref('requests/' + this.angularFireDatabase.createPushId()).set({
+          title: this.form.controls['title'].value,
+          description: this.form.controls['description'].value,
+          requestPicture: this.form.controls['requestPicture'].value,
+          geoLocation: this.form.controls['geoLocation'].value,
+          timeStamp: this.form.controls['timeStamp'].value,
+          UUID: user.uid
+        }).then(() => {
+          let toast = this.toastCtrl.create({
+            message: this.resquestSendSuccessString,
+            duration: 3000,
+            position: 'top'
+          });
+          toast.present();
+          this.navCtrl.pop();
+        });  
+      }
+      this.subGeolocation.unsubscribe();
+    });
   }
 }

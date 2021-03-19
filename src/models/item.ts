@@ -11,6 +11,7 @@ export class Item {
 
   constructor(fields: any) {
     // Quick and dirty extend/assign fields to this model
+    // console.log(JSON.stringify(fields));
     for (const f in fields) {
       // @ts-ignore
       this[f] = fields[f];

@@ -1,6 +1,6 @@
 <ion-header>
 
-  <ion-navbar>
+  <ion-toolbar>
     <ion-title>Solicitações Públicas</ion-title>
 
     <ion-buttons end>
@@ -8,7 +8,7 @@
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
-  </ion-navbar>
+  </ion-toolbar>
 
 </ion-header>
 
@@ -23,11 +23,10 @@
     <ion-item-sliding *ngFor="let item of currentItems">
       <button ion-item (click)="openItem(item)">
         <ion-avatar item-start>
-          <img [src]="item.profilePic" />
+          <img [src]="item.requestPicture" />
         </ion-avatar>
-        <h2>{{item.name}}</h2>
-        <p>{{item.about}}</p>
-        <ion-note item-end *ngIf="item.note">{{item.note}}</ion-note>
+        <h2>{{item.title}}</h2>
+        <p>{{item.name}}</p>
       </button>
 
       <ion-item-options>

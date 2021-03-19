@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, ModalController, NavController } from 'ionic-angular';
+import { IonicPage, MenuController, ModalController, NavController } from 'ionic-angular';
 
 import { Item } from '../../models/item';
 import { Items } from '../../providers';
@@ -13,14 +13,18 @@ import { NewRequestPage } from '../';
 export class ListMasterPage {
   currentItems: Item[];
 
-  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController) {
-    this.currentItems = this.items.query();
+  constructor(public navCtrl: NavController, public items: Items, public modalCtrl: ModalController, menu: MenuController) {
+    this.items.clear();
+    this.currentItems = this.items.query().reverse();
+    menu.enable(false);
   }
 
   /**
    * The view loaded, let's query our items for the list
    */
   ionViewDidLoad() {
+    this.items.clear();
+    this.currentItems = this.items.query().reverse();
   }
 
   /**
@@ -28,16 +32,10 @@ export class ListMasterPage {
    * modal and then adds the new item to our data source if the user created one.
    */
   addItem() {
-    // let addModal = this.modalCtrl.create('NewRequestPage');
-    // addModal.onDidDismiss(item => {
-    //   if (item) {
-    //     this.items.add(item);
-    //   }
-    // })
-    // addModal.present();
-
-    
-    this.navCtrl.push(NewRequestPage);
+    this.items.clear();
+    this.navCtrl.push(NewRequestPage).then(()=> {
+      this.currentItems = this.items.query().reverse();
+    });
   }
 
   /**

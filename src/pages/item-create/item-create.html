@@ -24,11 +24,23 @@
       <ion-item>
         <ion-input type="text" placeholder="Descrição" formControlName="description"></ion-input>
       </ion-item>
-      <ion-item>
-        <div class="profile-image-placeholder">
-          <ion-icon name="camera">Tirar Foto</ion-icon>
-        </div>
-      </ion-item>
     </ion-list>
   </form>
+  <ion-list>
+    <ion-item>
+      <button ion-button (click)="getPicture()" strong>
+        <ion-icon name="camera">
+          <span color="primary">
+            Tirar Foto
+          </span>
+        </ion-icon>
+      </button>
+
+    </ion-item>
+    <ion-item>
+      <!-- <div class="request-image" [style.backgroundImage]="getProfileImageStyle()" *ngIf="this.form.controls.requestPicture.value"></div> -->
+      <img src="{{getRequestPictureSource()}}" *ngIf="this.form.controls.requestPicture.value" />
+    </ion-item>
+  </ion-list>
+  
 </ion-content>

@@ -1,28 +1,47 @@
 import { Injectable } from '@angular/core';
+import { AngularFireDatabase } from 'angularfire2/database';
 
 import { Item } from '../../models/item';
 
 @Injectable()
 export class Items {
   items: Item[] = [];
+  list: any;
 
-  defaultItem: any = {
-    "name": "Burt Bear",
-    "profilePic": "assets/img/speakers/bear.jpg",
-    "about": "Burt is a Bear.",
-  };
+  constructor(public angularFireDatabase: AngularFireDatabase) {
+    this.list = this.angularFireDatabase.database.ref('requests');
+    this.items = [];
+    
+    this.list.on('value', (snapshot) => {
+      console.log("snapshot");
+      var result = snapshot.val();
+      for(let k in result){
+        console.log(result[k].title);
+        result[k].key = k;
 
-
-  constructor() {
-    let items = [
-    ];
-
-    for (let item of items) {
-      this.items.push(new Item(item));
-    }
+        let user = this.angularFireDatabase.database.ref('users/' + result[k].UUID);
+        user.on('value', (userData) => {
+          result[k].name = userData.child('name').val();
+          result[k].selfie = userData.child('selfie').val();  
+          let aux = new Item(result[k]);
+          let existente = this.items.filter((pitem)=>{
+            return pitem.key == aux.key;
+          });
+          if(existente.length <= 0){
+            this.add(aux);
+          }else {
+            for(let j in this.items) {
+              if(this.items[j].key == aux.key) this.items[j] = aux;
+            }
+          }
+        });
+      }
+    });
   }
 
   query(params?: any) {
+
+    // console.log(JSON.stringify(this.items));
     if (!params) {
       return this.items;
     }
@@ -46,5 +65,8 @@ export class Items {
 
   delete(item: Item) {
     this.items.splice(this.items.indexOf(item), 1);
+  }
+  async clear(){
+    this.items = [];
   }
 }

@@ -66,9 +66,4 @@ export class TutorialPage {
     this.menu.enable(false);
   }
 
-  ionViewWillLeave() {
-    // enable the root left menu when leaving the tutorial page
-    this.menu.enable(true);
-  }
-
 }
